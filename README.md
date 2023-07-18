@@ -1,1 +1,1 @@
-# SafeInRideApp
+# SafeInRide
