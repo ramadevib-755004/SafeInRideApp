@@ -1,0 +1,106 @@
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+    <title>Safe InRide.</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="{{ url_for('static',filename='assets/css/main.css') }}" />
+    <noscript>
+        <link rel="stylesheet" href="{{ url_for('static',filename='assets/css/noscript.css') }}" /></noscript>
+</head>
+
+<body class="is-preload">
+    <div id="page-wrapper">
+        <div id="header">
+
+            <nav id="nav">
+                <table>
+                    <tr>
+                        <td>
+                            <a href="{{ url_for('index') }}">
+                                <image src="{{ url_for('static',filename='images/logo.png') }}"></image>
+                            </a>
+                        </td>
+                        
+                    </tr>
+                    <tr>
+                        <td>
+                            <a href="{{ url_for('safeplace') }}">Search Location</a>
+                                <a href="https://colab.research.google.com/drive/16sBWNN5V_btXW0jI1IZD37egMZHRqhFM?usp=sharing" target="_blank">Safety Refinery</a>&nbsp;
+                        </td>
+                    </tr>
+                </table>
+
+
+
+                <!-- <li><a href="Moments.html">Moments</a></li>          
+                <li><a href="Feedback.html">Feedback</a></li> -->
+
+            </nav>
+        </div>
+
+        <!-- Wrapper -->
+        <div id="wrapper" class="divided">
+
+            <!-- One -->
+            <section
+                class="banner style1 orient-left content-align-left image-position-right fullscreen onload-image-fade-in onload-content-fade-right">
+                <div class="content">
+                    <h1>Contact</h1>
+                    <p class="major">Tell us what you have to say about our application Safe-InRide</p>
+                    <ul class="actions stacked">
+                        <li><a href="{{ url_for('contact') }}"
+                                class="button big wide smooth-scroll-middle">RamaDevi1092@gmail.com</a></li>
+                    </ul>
+                </div>
+                <div class="image">
+                    <img src="{{ url_for('static',filename='images/banner1.jpg') }}" alt="" />
+                </div>
+            </section>
+
+            <!-- Two -->
+
+
+            <!-- Footer -->
+            <footer class="wrapper style1 align-center">
+                <div class="inner">
+                    <ul class="icons">
+                        <li><a href="#" class="icon brands style2 fa-twitter"><span class="label">Twitter</span></a>
+                        </li>
+                        <li><a href="#" class="icon brands style2 fa-facebook-f"><span class="label">Facebook</span></a>
+                        </li>
+                        <li><a href="#" class="icon brands style2 fa-instagram"><span class="label">Instagram</span></a>
+                        </li>
+                        <li><a href="#" class="icon brands style2 fa-linkedin-in"><span
+                                    class="label">LinkedIn</span></a></li>
+                        <li><a href="#" class="icon style2 fa-envelope"><span class="label">Email</span></a></li>
+                    </ul>
+                    <p>&copy; Reimagine2023</p>
+                </div>
+            </footer>
+
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static',filename='assets/js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='assets/js/jquery.scrollex.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='assets/js/jquery.scrolly.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='assets/js/browser.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='assets/js/breakpoints.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='assets/js/util.js') }}"></script>
+    <script src="{{ url_for('static',filename='assets/js/main.js') }}"></script>
+    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+    <df-messenger
+    intent="WELCOME"
+    chat-title="NewAgent"
+    agent-id="84a5b47b-8011-4844-912a-ad118848e3ff"
+    language-code="en"></df-messenger>
+
+
+</body>
+
+</html>

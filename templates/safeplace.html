@@ -1,0 +1,747 @@
+<html>
+
+<head>
+    <title>Safe InRide</title>
+    <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+    <meta name="viewport" content="initial-scale=1.0,
+                width=device-width" />
+    <script src="https://js.api.here.com/v3/3.1/mapsjs-core.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://js.api.here.com/v3/3.1/mapsjs-service.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://js.api.here.com/v3/3.1/mapsjs-ui.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='assets/css/main.css') }}" />
+    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/radar.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+    <noscript>
+        <link rel="stylesheet" href="{{ url_for('static',filename='assets/css/noscript.css') }}" /></noscript>
+</head>
+
+<body style='margin: 0'>
+    <style>
+        #chartdiv {
+            width: 100%;
+            height: 300px;
+        }
+
+        #areadiv {
+            width: 100%;
+            height: 300px;
+        }
+
+        #header {
+            width: 84%;
+        }
+    </style>
+    <div id="page-wrapper">
+        <div id="header">
+            <h1><a href="{{ url_for('index') }}">
+                    <image src="{{ url_for('static',filename='images/logo.png') }}"
+                        style="height:45px;width:80px;margin-left:-41px;"></image>
+                </a></h1>
+            <nav id="nav">
+                <ul>
+
+
+                    <li><a href="https://colab.research.google.com/drive/16sBWNN5V_btXW0jI1IZD37egMZHRqhFM?usp=sharing"
+                            target="_blank">Safety Refinery</a></li>
+                    <li><a href="{{ url_for('contact') }}">Contact</a></li>
+                    <!-- <li><a href="Moments.html">Moments</a></li>          
+            <li><a href="Feedback.html">Feedback</a></li> -->
+                </ul>
+            </nav>
+        </div>
+
+
+        <!-- <div class="container">
+        <div class="card custom-bg w-50 p-4 d-flex">
+           
+            <form id="hotel-form">
+                <div class="row">
+                    
+                        <label for="destination" class="d-inline-flex">Location</label>
+                        <input type="text" placeholder="City" class="form-control" id="search" name="destination" required>
+                            <br>
+                        <button type="submit" class="btn btn-primary" onClick="searchLocations()">Search</button>
+                    </div>
+                </div>
+                
+            </form>
+        </div>
+    </div> -->
+        <div class="container" style="margin-top: 74px;">
+            <div class="row">
+                <div class="form-group col-md align-items-start flex-column">
+                    <label for="destination" class="d-inline-flex">Your Location</label>
+                    <div class="autocomplete">
+                        <input type="text" id="search" title="Search" placeholder="Manhattan.."></input>
+                    </div>
+                    <button type="submit1" id="searchbtn" class="button big wide smooth-scroll-middle"
+                        onClick="searchLocations()">Safety Index!</button>
+                </div>
+            </div>
+        </div>
+        <div style="width: 100%; height: 100%" id="mapContainer"></div>
+        <hr>
+        </hr>
+        <h4 id="hidechartdiv" hidden="true"><b>Safety index of this location</b></h4>
+
+        <div id="chartdiv" hidden="true"></div>
+        <hr>
+        </hr>
+        <h4 id="hideareadiv" hidden="true"><b>Area Chart of this location</b></h4>
+        <div id="areadiv" hidden="true"></div>
+        <hr>
+        </hr>
+        <h4 id="hidesafediv" hidden="true"><b>Safety Image of this location</b></h4>
+        <div id="safediv" hidden="true">
+            <image src="{{ url_for('static',filename='images/womencabsafetymanhattanNewYork.png') }}"
+                style="height:500;margin-left:-41px;"></image>
+        </div>
+        <hr>
+        </hr>
+        <h4 id="hidechatdiv" hidden="true"> <b>ChatGPT response for Manhattan - NewYork</b></h4>
+        <div id="chatdiv" hidden="true">
+
+            <p>New York City, including Manhattan, is generally considered safe for women. However, as with any large
+                metropolitan area, it's important to exercise caution and be aware of your surroundings. Here are some
+                considerations for women's safety in Manhattan and New York City:</p>
+            <ol>
+                <li>Use well-populated and well-lit areas: Stick to busy streets and areas with a good amount of
+                    pedestrian traffic. Avoid walking alone in dark or isolated areas, especially at night.</li>
+                <li>Stay alert and confident: Be aware of your surroundings and project confidence when you're out and
+                    about. Avoid distractions like excessive phone usage, which can make you a target for potential
+                    thieves or attackers.</li>
+                <li>Utilize reliable transportation: New York City has an extensive public transportation system,
+                    including buses and subways. Stick to well-lit subway platforms and opt for buses with other
+                    passengers. Licensed taxis and ride-hailing services are also safe options.</li>
+                <li>Secure your belongings: Keep your personal belongings secure and within sight at all times. Use bags
+                    that can be worn across your body and keep valuables out of sight.</li>
+                <li>Trust your instincts: If you feel uncomfortable or sense danger, trust your instincts and take
+                    appropriate action. Move to a crowded area or seek help from nearby establishments.</li>
+                <li>Travel in groups or pairs: Whenever possible, travel with a friend or in a group, especially during
+                    late hours. There is safety in numbers, and potential criminals are less likely to target a group.
+                </li>
+                <li>Be cautious with strangers: While New Yorkers are generally friendly, it's important to exercise
+                    caution when interacting with strangers. Avoid sharing personal information or accepting offers from
+                    unfamiliar individuals.</li>
+                <li>Report any incidents: If you encounter any suspicious or threatening behavior, report it to the
+                    appropriate authorities. In case of emergencies, dial 911 for immediate assistance.</li>
+                <li>Plan your route in advance: Familiarize yourself with the areas you'll be visiting and plan your
+                    route accordingly. Avoid wandering aimlessly and be confident in navigating the city.</li>
+                <li>Use reputable establishments: Stick to well-known establishments for dining, shopping, and
+                    entertainment. If you're unsure about a place, do some research or ask locals for recommendations.
+                </li>
+
+
+            </ol>
+            <b>It's worth noting that New York City is a diverse and vibrant city, and millions of women safely navigate
+                its streets every day. By staying alert, being prepared, and taking necessary precautions, you can enjoy
+                Manhattan and the city as a whole while prioritizing your safety.</b>
+        </div>
+        <footer class="wrapper style1 align-center">
+            <div class="inner">
+                <ul class="icons">
+                    <li><a href="#" class="icon brands style2 fa-twitter"><span class="label">Twitter</span></a></li>
+                    <li><a href="#" class="icon brands style2 fa-facebook-f"><span class="label">Facebook</span></a>
+                    </li>
+                    <li><a href="#" class="icon brands style2 fa-instagram"><span class="label">Instagram</span></a>
+                    </li>
+                    <li><a href="#" class="icon brands style2 fa-linkedin-in"><span class="label">LinkedIn</span></a>
+                    </li>
+                    <li><a href="#" class="icon style2 fa-envelope"><span class="label">Email</span></a></li>
+                </ul>
+                <p>&copy; Reimagine2023</p>
+            </div>
+        </footer>
+    </div>
+
+
+    <script>
+
+
+        function searchLocations() {
+
+
+
+            var elem = document.getElementById('chartdiv');
+            elem.style.display = 'block';
+            elem.style.visibility = 'visible';
+
+            var helem = document.getElementById('hidechartdiv');
+            helem.style.display = 'block';
+            helem.style.visibility = 'visible';
+
+            var arelem = document.getElementById('areadiv');
+            arelem.style.display = 'block';
+            arelem.style.visibility = 'visible';
+
+
+            var ahelem = document.getElementById('hideareadiv');
+            ahelem.style.display = 'block';
+            ahelem.style.visibility = 'visible';
+
+            var sfelem = document.getElementById('safediv');
+            sfelem.style.display = 'block';
+            sfelem.style.visibility = 'visible';
+
+
+            var shelem = document.getElementById('hidesafediv');
+            shelem.style.display = 'block';
+            shelem.style.visibility = 'visible';
+
+
+            var chelem = document.getElementById('chatdiv');
+            chelem.style.display = 'block';
+            chelem.style.visibility = 'visible';
+
+            var cthelem = document.getElementById('hidechatdiv');
+            cthelem.style.display = 'block';
+            cthelem.style.visibility = 'visible';
+
+
+            var search = document.getElementById("search").value;
+            //    alert(search);
+
+            // Initialize the platform object:
+            var platform = new H.service.Platform({
+                'apikey': 'XujoMqMsn85MRHf3Nbu-xh9xPobEZF0tqFc8vX2mfsE'
+            });
+            const lat = 40.701862;
+            const long = -74.013841;
+            // Obtain the default map types from the platform object
+            var defaultLayers = platform.createDefaultLayers();
+            // Instantiate (and display) a map object:
+            var map = new H.Map(
+                document.getElementById('mapContainer'),
+                defaultLayers.vector.normal.map,
+                {
+                    zoom: 11,
+                    center: { lat: lat, lng: long }
+                }
+            );
+            var mapEvents = new H.mapevents.MapEvents(map);
+            var ui = H.ui.UI.createDefault(map, defaultLayers);
+            var nlat;
+            var nlong;
+            var marker;
+            '{% for safeplace in safeplaces %}'
+            if (search == '{{safeplace.name}}') {
+                // alert('{{safeplace.name}}');
+
+                nlat = '{{ safeplace.geoCode.latitude }}'
+                nlong = '{{ safeplace.geoCode.longitude }}'
+                marker = new H.map.Marker({ lat: nlat, lng: nlong });
+
+                content = '<h4>{{safeplace.name}}</h4> \
+    <ul> \
+        {% for safetyScore in safeplace.safetyScores %} \
+        <li>{{ safetyScore }} : {{ safeplace.safetyScores[safetyScore] }}</li> \
+        {% endfor %} \
+    </ul>\
+    '
+
+
+
+                marker.setData(content);
+                // var message=content.replace("<h4>","").replace("</h4>","").replace("<li>","").replace("</li>","").replace("<ul>","").replace("</ul>","")
+                var message = '{{safeplace.name}}\n \
+        {% for safetyScore in safeplace.safetyScores %} \
+        {{ safetyScore }} : {{ safeplace.safetyScores[safetyScore] }}\n \
+        {% endfor %} \
+    '
+                var myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/json");
+
+                var raw = JSON.stringify({
+                    "token": "aeslasm787i5ugb8",
+                    "to": 8977475890,
+                    "body": message
+                });
+
+                var requestOptions = {
+                    method: 'POST',
+                    headers: myHeaders,
+                    body: raw,
+                    redirect: 'follow'
+                };
+
+                fetch("https://api.ultramsg.com/instance54149/messages/chat", requestOptions)
+                    .then(response => response.text())
+                    .then(result => console.log(result))
+                    .catch(error => console.log('error', error));
+
+                marker.addEventListener("tap", event => {
+                    console.log("clicked")
+                    const bubble = new H.ui.InfoBubble(
+                        event.target.getGeometry(),
+                        {
+                            content: event.target.getData()
+                        }
+                    );
+                    ui.addBubble(bubble);
+                }, false);
+
+                // Add the marker to the map:
+                map.addObject(marker);
+            }
+            '{% endfor %}'
+
+
+        }
+
+
+    </script>
+    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+    <df-messenger
+    intent="WELCOME"
+    chat-title="NewAgent"
+    agent-id="84a5b47b-8011-4844-912a-ad118848e3ff"
+    language-code="en"></df-messenger>
+
+    <script>
+        function autocomplete(inp, arr) {
+            /*the autocomplete function takes two arguments,
+            the text field element and an array of possible autocompleted values:*/
+            var currentFocus;
+            /*execute a function when someone writes in the text field:*/
+            inp.addEventListener("input", function (e) {
+                var a, b, i, val = this.value;
+                /*close any already open lists of autocompleted values*/
+                closeAllLists();
+                if (!val) { return false; }
+                currentFocus = -1;
+                /*create a DIV element that will contain the items (values):*/
+                a = document.createElement("DIV");
+                a.setAttribute("id", this.id + "autocomplete-list");
+                a.setAttribute("class", "autocomplete-items");
+                /*append the DIV element as a child of the autocomplete container:*/
+                this.parentNode.appendChild(a);
+                /*for each item in the array...*/
+                for (i = 0; i < arr.length; i++) {
+                    /*check if the item starts with the same letters as the text field value:*/
+                    if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                        /*create a DIV element for each matching element:*/
+                        b = document.createElement("DIV");
+                        /*make the matching letters bold:*/
+                        b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+                        b.innerHTML += arr[i].substr(val.length);
+                        /*insert a input field that will hold the current array item's value:*/
+                        b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                        /*execute a function when someone clicks on the item value (DIV element):*/
+                        b.addEventListener("click", function (e) {
+                            /*insert the value for the autocomplete text field:*/
+                            inp.value = this.getElementsByTagName("input")[0].value;
+                            /*close the list of autocompleted values,
+                            (or any other open lists of autocompleted values:*/
+                            closeAllLists();
+                        });
+                        a.appendChild(b);
+                    }
+                }
+            });
+            /*execute a function presses a key on the keyboard:*/
+            inp.addEventListener("keydown", function (e) {
+                var x = document.getElementById(this.id + "autocomplete-list");
+                if (x) x = x.getElementsByTagName("div");
+                if (e.keyCode == 40) {
+                    /*If the arrow DOWN key is pressed,
+                    increase the currentFocus variable:*/
+                    currentFocus++;
+                    /*and and make the current item more visible:*/
+                    addActive(x);
+                } else if (e.keyCode == 38) { //up
+                    /*If the arrow UP key is pressed,
+                    decrease the currentFocus variable:*/
+                    currentFocus--;
+                    /*and and make the current item more visible:*/
+                    addActive(x);
+                } else if (e.keyCode == 13) {
+                    /*If the ENTER key is pressed, prevent the form from being submitted,*/
+                    e.preventDefault();
+                    if (currentFocus > -1) {
+                        /*and simulate a click on the "active" item:*/
+                        if (x) x[currentFocus].click();
+                    }
+                }
+            });
+            function addActive(x) {
+                /*a function to classify an item as "active":*/
+                if (!x) return false;
+                /*start by removing the "active" class on all items:*/
+                removeActive(x);
+                if (currentFocus >= x.length) currentFocus = 0;
+                if (currentFocus < 0) currentFocus = (x.length - 1);
+                /*add class "autocomplete-active":*/
+                x[currentFocus].classList.add("autocomplete-active");
+            }
+            function removeActive(x) {
+                /*a function to remove the "active" class from all autocomplete items:*/
+                for (var i = 0; i < x.length; i++) {
+                    x[i].classList.remove("autocomplete-active");
+                }
+            }
+            function closeAllLists(elmnt) {
+                /*close all autocomplete lists in the document,
+                except the one passed as an argument:*/
+                var x = document.getElementsByClassName("autocomplete-items");
+                for (var i = 0; i < x.length; i++) {
+                    if (elmnt != x[i] && elmnt != inp) {
+                        x[i].parentNode.removeChild(x[i]);
+                    }
+                }
+            }
+            /*execute a function when someone clicks in the document:*/
+            document.addEventListener("click", function (e) {
+                closeAllLists(e.target);
+            });
+        }
+
+        /*An array containing all the country names in the world:*/
+        var countries = ["Manhattan-Battery Park City (New York)", "Manhattan-Battery Park-South Ferry (New York)", "Brooklyn-DUMBO (New York)", "Manhattan - NoHo (New York)", "Manhattan-Alphabet City (New York)", "Manhattan-Chinatown (New York)", "Manhattan-City Hall (New York)", "Manhattan-East Village (New York)", "Manhattan-Financial District (New York)", "Manhattan-Gramercy Park (New York)"]
+
+        /*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
+        autocomplete(document.getElementById("search"), countries);
+    </script>
+
+    <script>
+        am5.ready(function () {
+
+            // Create root element
+            // https://www.amcharts.com/docs/v5/getting-started/#Root_element
+            var root = am5.Root.new("chartdiv");
+
+
+            // Set themes
+            // https://www.amcharts.com/docs/v5/concepts/themes/
+            root.setThemes([
+                am5themes_Animated.new(root)
+            ]);
+
+
+            // Create chart
+            // https://www.amcharts.com/docs/v5/charts/radar-chart/
+            var chart = root.container.children.push(am5radar.RadarChart.new(root, {
+                panX: false,
+                panY: false,
+                startAngle: 160,
+                endAngle: 380
+            }));
+
+
+            // Create axis and its renderer
+            // https://www.amcharts.com/docs/v5/charts/radar-chart/gauge-charts/#Axes
+            var axisRenderer = am5radar.AxisRendererCircular.new(root, {
+                innerRadius: -40
+            });
+
+            axisRenderer.grid.template.setAll({
+                stroke: root.interfaceColors.get("background"),
+                visible: true,
+                strokeOpacity: 0.8
+            });
+
+            var xAxis = chart.xAxes.push(am5xy.ValueAxis.new(root, {
+                maxDeviation: 0,
+                min: -40,
+                max: 100,
+                strictMinMax: true,
+                renderer: axisRenderer
+            }));
+
+
+            // Add clock hand
+            // https://www.amcharts.com/docs/v5/charts/radar-chart/gauge-charts/#Clock_hands
+            var axisDataItem = xAxis.makeDataItem({});
+
+            var clockHand = am5radar.ClockHand.new(root, {
+                pinRadius: am5.percent(20),
+                radius: am5.percent(100),
+                bottomWidth: 40
+            })
+
+            var bullet = axisDataItem.set("bullet", am5xy.AxisBullet.new(root, {
+                sprite: clockHand
+            }));
+
+            xAxis.createAxisRange(axisDataItem);
+
+            var label = chart.radarContainer.children.push(am5.Label.new(root, {
+                fill: am5.color(0xffffff),
+                centerX: am5.percent(50),
+                textAlign: "center",
+                centerY: am5.percent(50),
+                fontSize: "3em"
+            }));
+
+            axisDataItem.set("value", 50);
+            bullet.get("sprite").on("rotation", function () {
+                var value = axisDataItem.get("value");
+                var text = Math.round(axisDataItem.get("value")).toString();
+                var fill = am5.color(0x000000);
+                xAxis.axisRanges.each(function (axisRange) {
+                    if (value >= axisRange.get("value") && value <= axisRange.get("endValue")) {
+                        fill = axisRange.get("axisFill").get("fill");
+                    }
+                })
+
+                label.set("text", Math.round(value).toString());
+
+                clockHand.pin.animate({ key: "fill", to: fill, duration: 500, easing: am5.ease.out(am5.ease.cubic) })
+                clockHand.hand.animate({ key: "fill", to: fill, duration: 500, easing: am5.ease.out(am5.ease.cubic) })
+            });
+
+
+            axisDataItem.animate({
+                key: "value",
+                to: Math.round(Math.random() * 140 - 60),
+                duration: 500,
+                easing: am5.ease.out(am5.ease.cubic)
+            });
+
+
+            chart.bulletsContainer.set("mask", undefined);
+
+
+            // Create axis ranges bands
+            // https://www.amcharts.com/docs/v5/charts/radar-chart/gauge-charts/#Bands
+            var bandsData = [{
+                title: "Safe",
+                color: "#b0d136",
+                lowScore: -40,
+                highScore: 0
+            }, {
+                title: "Volatile",
+                color: "#f3eb0c",
+                lowScore: 0,
+                highScore: 20
+            }, {
+                title: "Risky",
+                color: "#fdae19",
+                lowScore: 20,
+                highScore: 40
+            }, {
+                title: "Unsafe",
+                color: "#f04922",
+                lowScore: 40,
+                highScore: 60
+            }, {
+                title: "Highly Unsafe",
+                color: "#ee1f25",
+                lowScore: 60,
+                highScore: 100
+            }];
+
+            am5.array.each(bandsData, function (data) {
+                var axisRange = xAxis.createAxisRange(xAxis.makeDataItem({}));
+
+                axisRange.setAll({
+                    value: data.lowScore,
+                    endValue: data.highScore
+                });
+
+                axisRange.get("axisFill").setAll({
+                    visible: true,
+                    fill: am5.color(data.color),
+                    fillOpacity: 0.8
+                });
+
+                axisRange.get("label").setAll({
+                    text: data.title,
+                    inside: true,
+                    radius: 15,
+                    fontSize: "0.9em",
+                    fill: root.interfaceColors.get("background")
+                });
+            });
+
+
+            // Make stuff animate on load
+            chart.appear(1000, 100);
+        });
+    </script>
+    <script>
+        am5.ready(function () {
+
+            // Create root element
+            // https://www.amcharts.com/docs/v5/getting-started/#Root_element
+            var root = am5.Root.new("areadiv");
+
+
+            // Set themes
+            // https://www.amcharts.com/docs/v5/concepts/themes/
+            root.setThemes([
+                am5themes_Animated.new(root)
+            ]);
+
+
+            // Create chart
+            // https://www.amcharts.com/docs/v5/charts/xy-chart/
+            var chart = root.container.children.push(am5xy.XYChart.new(root, {
+                panX: true,
+                panY: true,
+                wheelX: "panX",
+                wheelY: "zoomX",
+                pinchZoomX: true
+            }));
+
+
+            // Add cursor
+            // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
+            var cursor = chart.set("cursor", am5xy.XYCursor.new(root, {
+                behavior: "none"
+            }));
+            cursor.lineY.set("visible", false);
+
+
+            // The data
+            var data = [{
+                "year": "Manhattan-Battery Park City (New York)",
+                "road repairs": 15,
+                "accidents": 12
+            }, {
+                "year": "Manhattan-Battery Park-South Ferry (New York)",
+                "road repairs": 20,
+                "accidents": 11
+            }, {
+                "year": "Manhattan - NoHo (New York)",
+                "road repairs": 25,
+                "accidents": 18
+            }, {
+                "year": "Manhattan-Battery Park City (New York)",
+                "robberyroad repairs": 15,
+                "accidents": 16
+            }, {
+                "year": "Manhattan-Alphabet City (New York)",
+                "road repairs": 22,
+                "accidents": 19
+            }];
+
+
+            // Create axes
+            // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
+            var xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root, {
+                categoryField: "year",
+                startLocation: 0.5,
+                endLocation: 0.5,
+                renderer: am5xy.AxisRendererX.new(root, {}),
+                tooltip: am5.Tooltip.new(root, {})
+            }));
+
+            xAxis.data.setAll(data);
+
+            var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
+                renderer: am5xy.AxisRendererY.new(root, {})
+            }));
+
+            // Add series
+            // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
+
+            function createSeries(name, field) {
+                var series = chart.series.push(am5xy.LineSeries.new(root, {
+                    name: name,
+                    xAxis: xAxis,
+                    yAxis: yAxis,
+                    stacked: true,
+                    valueYField: field,
+                    categoryXField: "year",
+                    tooltip: am5.Tooltip.new(root, {
+                        pointerOrientation: "horizontal",
+                        labelText: "[bold]{name}[/]\n{categoryX}: {valueY}"
+                    })
+                }));
+
+                series.fills.template.setAll({
+                    fillOpacity: 0.5,
+                    visible: true
+                });
+
+                series.data.setAll(data);
+                series.appear(1000);
+            }
+
+            createSeries("road repairs", "road repairs");
+            //createSeries("Theft", "theft");
+            createSeries("Accidents", "accidents");
+
+            // Add scrollbar
+            // https://www.amcharts.com/docs/v5/charts/xy-chart/scrollbars/
+            chart.set("scrollbarX", am5.Scrollbar.new(root, {
+                orientation: "horizontal"
+            }));
+
+            // Create axis ranges
+            // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/axis-ranges/
+            var rangeDataItem = xAxis.makeDataItem({
+                category: "2001",
+                endCategory: "2003"
+            });
+
+            var range = xAxis.createAxisRange(rangeDataItem);
+
+            rangeDataItem.get("grid").setAll({
+                stroke: am5.color(0x00ff33),
+                strokeOpacity: 0.5,
+                strokeDasharray: [3]
+            });
+
+            rangeDataItem.get("axisFill").setAll({
+                fill: am5.color(0x00ff33),
+                fillOpacity: 0.1,
+                visible: true
+            });
+
+            rangeDataItem.get("label").setAll({
+                inside: true,
+                text: "",
+                rotation: 90,
+                centerX: am5.p100,
+                centerY: am5.p100,
+                location: 0,
+                paddingBottom: 10,
+                paddingRight: 15
+            });
+
+
+            var rangeDataItem2 = xAxis.makeDataItem({
+                category: "2007"
+            });
+
+            var range2 = xAxis.createAxisRange(rangeDataItem2);
+
+            rangeDataItem2.get("grid").setAll({
+                stroke: am5.color(0x00ff33),
+                strokeOpacity: 1,
+                strokeDasharray: [3]
+            });
+
+            rangeDataItem2.get("axisFill").setAll({
+                fill: am5.color(0x00ff33),
+                fillOpacity: 0.1,
+                visible: true
+            });
+
+            rangeDataItem2.get("label").setAll({
+                inside: true,
+                text: "",
+                rotation: 90,
+                centerX: am5.p100,
+                centerY: am5.p100,
+                location: 0,
+                paddingBottom: 10,
+                paddingRight: 15
+            });
+
+            // Make stuff animate on load
+            // https://www.amcharts.com/docs/v5/concepts/animations/
+            chart.appear(1000, 100);
+
+        }); // end am5.ready()
+    </script>
+
+</body>
+
+</html>
